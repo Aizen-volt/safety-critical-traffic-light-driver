@@ -1,0 +1,31 @@
+[package]
+name = "safety-critical-traffic-light-driver"
+version = "0.1.0"
+edition = "2024"
+description = "Traffic light controller - safety-critical logic"
+authors = ["Mateusz Kaszubowski", "Weronika Koterba"]
+
+[lib]
+name = "tlc4"
+path = "src/lib.rs"
+
+[profile.release]
+overflow-checks = true
+panic = "abort"
+
+[profile.dev]
+overflow-checks = true
+panic = "abort"
+
+[lints.clippy]
+disallowed_types = "deny"
+
+# Twarda blokada panik w kodzie biblioteki.
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"
+integer_arithmetic = "warn"
+
+missing_docs_in_private_items = "allow"
+module_name_repetitions = "allow"
