@@ -1,5 +1,11 @@
-//! The library exposes a transition function `step(state, input) -> (state, output)`
-//! and the data types it operates on.
-
 #![forbid(unsafe_code)]
-#![warn(missing_docs)]
+
+pub mod types;
+pub mod config;
+pub mod input;
+pub mod output;
+pub mod state;
+pub mod log;
+pub mod step;
+
+pub use crate::step::step;
