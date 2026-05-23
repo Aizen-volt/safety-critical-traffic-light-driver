@@ -41,6 +41,15 @@ impl State {
             phase_steps: 0,
         }
     }
+
+    pub fn reset_to_clean_auto(&mut self) {
+        self.mode = Mode::Auto;
+        self.phase = Phase::GreenNs;
+        self.preempt = PreemptState::NoPreempt;
+        self.preempt_steps = 0;
+        self.phase_steps = 0;
+        self.ped_demand = [false; NUM_LEGS];
+    }
 }
 
 impl Default for State {

@@ -24,6 +24,10 @@ pub fn step(state: State, input: Input) -> (State, Output, LogBuffer) {
         log.push(LogEvent::TopStateChanged);
     }
 
+    if matches!(next.top, TopState::Initializing) && input.lamp_fault {
+        log.push(LogEvent::InitSelfTestFailed);
+    }
+
     if !matches!(next.top, TopState::Operational) {
         let output = output_for(next.top, next.mode, next.phase);
         return (next, output, log);
@@ -83,14 +87,9 @@ fn advance_top_state(mut state: State, input: &Input) -> State {
         TopState::Initializing => {
             if !input.power_ok {
                 state.top = TopState::Off;
-            } else if !input.lamp_fault {
+            } else if !input.lamp_fault && matches!(input.operator_switch, Mode::Auto) {
                 state.top = TopState::Operational;
-                state.mode = Mode::Auto;
-                state.phase = Phase::GreenNs;
-                state.preempt = PreemptState::NoPreempt;
-                state.preempt_steps = 0;
-                state.phase_steps = 0;
-                state.ped_demand = [false; NUM_LEGS];
+                state.reset_to_clean_auto();
             }
         }
         TopState::Operational => {
@@ -187,11 +186,7 @@ fn evaluate_emergency_transition(mut state: State, input: &Input) -> State {
                 && matches!(input.operator_switch, Mode::Auto);
             if can_exit {
                 state.mode = Mode::Auto;
-                state.phase = Phase::GreenNs;
-                state.preempt = PreemptState::NoPreempt;
-                state.ped_demand = [false; NUM_LEGS];
-                state.preempt_steps = 0;
-                state.phase_steps = 0;
+                state.reset_to_clean_auto();
             }
         }
     }

@@ -10,6 +10,7 @@ pub enum LogEvent {
     PreemptTimeout,
     PedDemandLatched { crossing_index: usize },
     PedDemandCleared { crossing_index: usize },
+    InitSelfTestFailed,
 }
 
 pub const LOG_CAPACITY: usize = 16;
