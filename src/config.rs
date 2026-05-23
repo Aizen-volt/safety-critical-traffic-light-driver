@@ -1,4 +1,4 @@
-﻿pub const MIN_GREEN_STEPS: u8 = 50;
+pub const MIN_GREEN_STEPS: u8 = 50;
 pub const MIN_YELLOW_STEPS: u8 = 30;
 pub const MIN_ALLRED_STEPS: u8 = 20;
 

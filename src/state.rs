@@ -1,4 +1,4 @@
-﻿use crate::config::NUM_LEGS;
+use crate::config::NUM_LEGS;
 use crate::types::{Mode, Phase, PreemptState, TopState};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]

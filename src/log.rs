@@ -1,4 +1,4 @@
-﻿use crate::types::{Mode, Phase, PreemptState};
+use crate::types::{Mode, Phase, PreemptState};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum LogEvent {

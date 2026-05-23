@@ -1,4 +1,4 @@
-﻿#![allow(clippy::disallowed_types, clippy::indexing_slicing)]
+#![allow(clippy::disallowed_types, clippy::indexing_slicing)]
 
 use tlc4::config::{MIN_ALLRED_STEPS, MIN_GREEN_STEPS, MIN_YELLOW_STEPS};
 use tlc4::input::Input;

@@ -1,4 +1,4 @@
-﻿disallowed-types = [
+disallowed-types = [
     "std::vec::Vec",
     "alloc::vec::Vec",
     "std::boxed::Box",

@@ -1,4 +1,4 @@
-﻿#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Mode {
     Auto,
     Emergency,

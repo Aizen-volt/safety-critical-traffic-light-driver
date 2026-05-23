@@ -1,7 +1,7 @@
-﻿use crate::config::{
+use crate::config::{
     MIN_ALLRED_STEPS, MIN_GREEN_STEPS, MIN_YELLOW_STEPS, NUM_LEGS, PREEMPT_MAX_STEPS,
 };
-use crate::input::{validate, Input, InputValidation};
+use crate::input::{validate, Input};
 use crate::log::{LogBuffer, LogEvent};
 use crate::output::{output_for, Output};
 use crate::state::State;
@@ -34,7 +34,7 @@ pub fn step(state: State, input: Input) -> (State, Output, LogBuffer) {
 
     let prev_preempt = next.preempt;
     let prev_preempt_steps = next.preempt_steps;
-    next = update_preempt_region(next, &input, &validation);
+    next = update_preempt_region(next, &input);
     if next.preempt != prev_preempt {
         log.push(LogEvent::PreemptChanged {
             from: prev_preempt,
@@ -81,11 +81,23 @@ fn advance_top_state(mut state: State, input: &Input) -> State {
             }
         }
         TopState::Initializing => {
-            if input.power_ok {
+            if !input.power_ok {
+                state.top = TopState::Off;
+            } else if !input.lamp_fault {
                 state.top = TopState::Operational;
+                state.mode = Mode::Auto;
+                state.phase = Phase::GreenNs;
+                state.preempt = PreemptState::NoPreempt;
+                state.preempt_steps = 0;
+                state.phase_steps = 0;
+                state.ped_demand = [false; NUM_LEGS];
             }
         }
-        TopState::Operational => {}
+        TopState::Operational => {
+            if !input.power_ok {
+                state.top = TopState::Off;
+            }
+        }
     }
     state
 }
@@ -134,11 +146,7 @@ fn record_ped_demand_changes(
     }
 }
 
-fn update_preempt_region(mut state: State, input: &Input, validation: &InputValidation) -> State {
-    if validation.conflicting_emergency_request {
-        return state;
-    }
-
+fn update_preempt_region(mut state: State, input: &Input) -> State {
     let [req_ns, req_ew] = input.emergency_request;
     state.preempt = match (req_ns, req_ew) {
         (false, false) => {
@@ -153,7 +161,10 @@ fn update_preempt_region(mut state: State, input: &Input, validation: &InputVali
             state.preempt_steps = state.preempt_steps.saturating_add(1);
             PreemptState::PreemptEw
         }
-        (true, true) => state.preempt,
+        (true, true) => {
+            state.preempt_steps = 0;
+            PreemptState::NoPreempt
+        }
     };
     state
 }

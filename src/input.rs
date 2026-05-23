@@ -1,4 +1,4 @@
-﻿use crate::config::{NUM_LEGS, NUM_VEHICLE_GROUPS};
+use crate::config::{NUM_LEGS, NUM_VEHICLE_GROUPS};
 use crate::types::Mode;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -62,7 +62,6 @@ pub const fn validate(input: &Input) -> InputValidation {
 
 #[cfg(test)]
 mod tests {
-    #![allow(missing_docs)]
     use super::*;
 
     #[test]

@@ -1,4 +1,4 @@
-﻿use crate::config::{NUM_LEGS, NUM_VEHICLE_GROUPS};
+use crate::config::{NUM_LEGS, NUM_VEHICLE_GROUPS};
 use crate::types::{Mode, PedColor, Phase, TopState, VehicleColor};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
