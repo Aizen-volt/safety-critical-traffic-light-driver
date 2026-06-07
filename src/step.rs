@@ -160,10 +160,7 @@ fn update_preempt_region(mut state: State, input: &Input) -> State {
             state.preempt_steps = state.preempt_steps.saturating_add(1);
             PreemptState::PreemptEw
         }
-        (true, true) => {
-            state.preempt_steps = 0;
-            PreemptState::NoPreempt
-        }
+        (true, true) => state.preempt,
     };
     state
 }
