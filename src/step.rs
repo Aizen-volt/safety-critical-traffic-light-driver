@@ -179,7 +179,6 @@ fn evaluate_emergency_transition(mut state: State, input: &Input) -> State {
         Mode::Emergency => {
             let can_exit = input.service_reset
                 && !input.lamp_fault
-                && input.power_ok
                 && matches!(input.operator_switch, Mode::Auto);
             if can_exit {
                 state.mode = Mode::Auto;
